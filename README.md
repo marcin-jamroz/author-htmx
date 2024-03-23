@@ -1,0 +1,5 @@
+- https://pnpm.io/installation#using-npm
+- https://www.shuttle.rs/blog/2023/12/15/using-actix-rust
+- https://htmx.org/docs/#introduction
+- https://tailwindcss.com/docs/font-size
+- https://www.joeymckenzie.tech/blog/templates-with-rust-axum-htmx-askama
