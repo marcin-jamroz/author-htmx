@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}HTMX + RUST{% endblock %}
+
+{% block content %}
+  <div class="grid size-full grid-rows-[auto_1fr]">
+    <div
+      hx-get="/home"
+      hx-trigger="load delay:100ms"
+      hx-target="#navigation_content"
+      class="colsp grid w-full grid-cols-2"
+    >
+      <button
+        hx-get="/home"
+        hx-target="#navigation_content"
+        class="hover:cursor-pointer hover:opacity-50"
+      >
+        Home
+      </button>
+      <button
+        hx-get="/hello"
+        hx-target="#navigation_content"
+        class="hover:cursor-pointer hover:opacity-50"
+      >
+        Hello
+      </button>
+    </div>
+    <div
+      id="navigation_content"
+      class="border-blue-600 flex size-full border-2 border-solid"
+    ></div>
+  </div>
+{% endblock %}
