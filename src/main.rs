@@ -1,36 +1,38 @@
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
-use askama_actix::Template;
+use askama::Template;
+use axum::response::{Html, IntoResponse};
+use axum::routing::get;
+use axum::Router;
+use tower_http::services::ServeDir;
+
+#[tokio::main]
+async fn main() {
+    let router = Router::new()
+        .route("/", get(index))
+        .route("/hello", get(hello))
+        .nest_service("/assets", ServeDir::new("assets"));
+
+    let listner = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
+    axum::serve(listner, router).await.unwrap();
+}
+
+async fn index() -> impl IntoResponse {
+    let template = IndexTemplate { name: "Marcin" };
+
+    Html(template.render().unwrap())
+}
+
+async fn hello() -> impl IntoResponse {
+    let template = HelloTemplate {};
+
+    Html(template.render().unwrap())
+}
+
+#[derive(Template)]
+#[template(path = "hello.html")]
+struct HelloTemplate;
 
 #[derive(Template)]
 #[template(path = "index.html")]
 struct IndexTemplate<'a> {
     name: &'a str,
-}
-
-#[get("/")]
-async fn hello() -> impl Responder {
-    IndexTemplate { name: "pog" }
-}
-
-#[post("/echo")]
-async fn echo(req_body: String) -> impl Responder {
-    HttpResponse::Ok().body(req_body)
-}
-
-async fn manual_hello() -> impl Responder {
-    HttpResponse::Ok().body("Hey there pog!")
-}
-
-#[actix_web::main]
-async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| {
-        App::new()
-            .service(hello)
-            .service(echo)
-            .service(actix_files::Files::new("/assets", "./assets"))
-            .route("/hey", web::get().to(manual_hello))
-    })
-    .bind(("127.0.0.1", 8080))?
-    .run()
-    .await
 }
