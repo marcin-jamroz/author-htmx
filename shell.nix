@@ -6,7 +6,7 @@ pkgs.mkShell {
   packages = [
     pkgs.rustc
     pkgs.rustfmt
-    pkgs.nodejs_18
+    pkgs.nodejs_20
     pkgs.pnpm
     pkgs.cargo
     pkgs.cargo-watch
